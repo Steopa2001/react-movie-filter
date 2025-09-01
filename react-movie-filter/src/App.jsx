@@ -11,10 +11,30 @@ function App() {
     { title: "Pulp Fiction", genre: "Thriller" },
   ];
 
+  // stato per il genere selezionato
+  const [selectedGenre, setSelectedGenre] = useState("");
+
   return (
     <div className="container">
       <div className="row">
-        <div className="col"></div>
+        <div className="col">
+          <h1>Lista Film</h1>
+
+          {/* select per il filtro per genere */}
+          <label>
+            Filtra per genere
+            <select
+              value={selectedGenre}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+            >
+              <option value="">Tutti</option>
+              <option value="Fantascienza">Fantascienza</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Romantico">Romantico</option>
+              <option value="Azione">Azione</option>
+            </select>
+          </label>
+        </div>
       </div>
     </div>
   );
