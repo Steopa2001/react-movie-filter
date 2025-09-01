@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   // lista iniziale dei film
@@ -16,6 +16,17 @@ function App() {
 
   // stato per i film filtrati
 const [filteredMovies, setFilteredMovies] = useState(initialMovies);
+
+// useEffect che aggiorna la lista quando cambia il genere
+  useEffect(() => {
+    if (selectedGenre === "") {
+      // se nessun genere scelto mostra tutti i film
+      setFilteredMovies(initialMovies);
+    } else {
+      // altrimenti mostra solo quelli del genere scelto
+      setFilteredMovies(initialMovies.filter((m) => m.genre === selectedGenre));
+    }
+  }, [selectedGenre, initialMovies]);
 
 
   return (
