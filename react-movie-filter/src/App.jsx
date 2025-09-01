@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function App() {
-    // lista iniziale dei film
+  // lista iniziale dei film
   const initialMovies = [
     { title: "Inception", genre: "Fantascienza" },
     { title: "Il Padrino", genre: "Thriller" },
@@ -11,6 +11,13 @@ function App() {
     { title: "Pulp Fiction", genre: "Thriller" },
   ];
 
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col"></div>
+      </div>
+    </div>
+  );
 }
 
 export default App;
