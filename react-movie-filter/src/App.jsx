@@ -20,9 +20,12 @@ function App() {
   // stato per la ricerca del titolo
   const [searchTerm, setSearchTerm] = useState("");
 
-   // useEffect che filtra i film in base a genere e ricerca
+  // stato principale dei film (serve per aggiungere nuovi film)
+  const [movies, setMovies] = useState(initialMovies);
+
+  // useEffect che filtra i film in base a genere e ricerca
   useEffect(() => {
-        let result = initialMovies;
+    let result = initialMovies;
 
     // filtro per genere se selezionato
     if (selectedGenre !== "") {
@@ -39,7 +42,6 @@ function App() {
     // aggiorna lo stato dei film filtrati
     setFilteredMovies(result);
   }, [selectedGenre, searchTerm, initialMovies]);
-
 
   return (
     <div className="container">
@@ -88,6 +90,29 @@ function App() {
             ))}
           </ul>
         </div>
+
+        <div className="col-12">
+          <h2>Aggiungi un nuovo film</h2>
+      {/* form per aggiungere film */}
+      <form onSubmit={addMovie}>
+        <input
+          type="text"
+          placeholder="Titolo"
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Genere"
+          value={newGenre}
+          onChange={(e) => setNewGenre(e.target.value)}
+        />
+        <button type="submit" className="ms-2">
+          Aggiungi
+        </button>
+      </form>
+        </div>
+
       </div>
     </div>
   );
