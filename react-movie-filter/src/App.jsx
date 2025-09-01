@@ -20,18 +20,26 @@ function App() {
   // stato per la ricerca del titolo
   const [searchTerm, setSearchTerm] = useState("");
 
-  // useEffect che aggiorna la lista quando cambia il genere
+   // useEffect che filtra i film in base a genere e ricerca
   useEffect(() => {
-    if (selectedGenre === "") {
-      // se nessun genere scelto mostra tutti i film
-      setFilteredMovies(initialMovies);
-    } else {
-      // altrimenti mostra solo quelli del genere scelto
-      setFilteredMovies(
-        initialMovies.filter((movies) => movies.genre === selectedGenre)
+        let result = initialMovies;
+
+    // filtro per genere se selezionato
+    if (selectedGenre !== "") {
+      result = result.filter((movie) => movie.genre === selectedGenre);
+    }
+
+    // filtro per titolo se c'è testo nella ricerca
+    if (searchTerm !== "") {
+      result = result.filter((movie) =>
+        movie.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-  }, [selectedGenre, initialMovies]);
+
+    // aggiorna lo stato dei film filtrati
+    setFilteredMovies(result);
+  }, [selectedGenre, searchTerm, initialMovies]);
+
 
   return (
     <div className="container">
