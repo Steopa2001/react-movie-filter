@@ -14,16 +14,20 @@ function App() {
   // stato per il genere selezionato
   const [selectedGenre, setSelectedGenre] = useState("");
 
+  // stato per i film filtrati
+const [filteredMovies, setFilteredMovies] = useState(initialMovies);
+
+
   return (
     <div className="container">
       <div className="row">
-        <div className="col">
+        <div className="col-12">
           <h1>Lista Film</h1>
 
           {/* select per il filtro per genere */}
           <label>
             Filtra per genere
-            <select
+            <select className="ms-2"
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
             >
@@ -34,6 +38,16 @@ function App() {
               <option value="Azione">Azione</option>
             </select>
           </label>
+        </div>
+        <div className="col-12">
+             <h2>Film trovati</h2>
+      <ul>
+        {filteredMovies.map((movie, index) => (
+          <li key={index}>
+            {movie.title} - {movie.genre}
+          </li>
+        ))}
+      </ul>
         </div>
       </div>
     </div>
