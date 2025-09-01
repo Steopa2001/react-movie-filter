@@ -23,9 +23,12 @@ function App() {
   // stato principale dei film (serve per aggiungere nuovi film)
   const [movies, setMovies] = useState(initialMovies);
 
+  const [newTitle, setNewTitle] = useState("");
+  const [newGenre, setNewGenre] = useState("");
+
   // useEffect che filtra i film in base a genere e ricerca
   useEffect(() => {
-    let result = initialMovies;
+    let result = movies;
 
     // filtro per genere se selezionato
     if (selectedGenre !== "") {
@@ -41,43 +44,56 @@ function App() {
 
     // aggiorna lo stato dei film filtrati
     setFilteredMovies(result);
-  }, [selectedGenre, searchTerm, initialMovies]);
+  }, [selectedGenre, searchTerm, movies]);
+
+  // funzione per aggiungere un nuovo film
+  const addMovie = (e) => {
+    e.preventDefault(); // blocca il refresh del form
+    if (!newTitle || !newGenre) return; // evita campi vuoti
+    const newMovie = { title: newTitle, genre: newGenre }; // crea oggetto film
+    setMovies([...movies, newMovie]); // aggiunge film alla lista
+    setNewTitle(""); // reset input titolo
+    setNewGenre(""); // reset input genere
+  };
+
+  // Funzione per rimuovere un film dalla lista
+  const removeMovie = (index) => {
+    setMovies((prevMovies) => prevMovies.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="container">
       <div className="row">
         <div className="col-12">
           <h1>Lista Film</h1>
+        </div>
 
-          {/* select per il filtro per genere */}
-          <label>
-            Filtra per genere
-            <select
-              className="ms-2"
-              value={selectedGenre}
-              onChange={(e) => setSelectedGenre(e.target.value)}
-            >
-              <option value="">Tutti</option>
-              <option value="Fantascienza">Fantascienza</option>
-              <option value="Thriller">Thriller</option>
-              <option value="Romantico">Romantico</option>
-              <option value="Azione">Azione</option>
-            </select>
-          </label>
+        {/* select per il filtro per genere */}
+        <div className="col-12 mb-3">
+          <label className="form-label">Filtra per genere</label>
+          <select
+            className="form-select"
+            value={selectedGenre}
+            onChange={(e) => setSelectedGenre(e.target.value)}
+          >
+            <option value="">Tutti</option>
+            <option value="Fantascienza">Fantascienza</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Romantico">Romantico</option>
+            <option value="Azione">Azione</option>
+          </select>
         </div>
 
         {/* campo ricerca per titolo */}
-        <div className="col-12">
-          <label>
-            Cerca per titolo
-            <input
-              className="ms-2"
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Scrivi il titolo..."
-            />
-          </label>
+        <div className="col-12 mb-3">
+          <label className="form-label">Cerca per titolo</label>
+          <input
+            type="text"
+            className="form-control"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Scrivi il titolo..."
+          />
         </div>
 
         <div className="col-12">
@@ -86,33 +102,42 @@ function App() {
             {filteredMovies.map((movie, index) => (
               <li key={index}>
                 {movie.title} - {movie.genre}
+                <button
+                  className="btn ms-2 btn-danger"
+                  onClick={() => removeMovie(index)}
+                >
+                  X
+                </button>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="col-12">
+        <div className="col-12 mb-3">
           <h2>Aggiungi un nuovo film</h2>
-      {/* form per aggiungere film */}
-      <form onSubmit={addMovie}>
-        <input
-          type="text"
-          placeholder="Titolo"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Genere"
-          value={newGenre}
-          onChange={(e) => setNewGenre(e.target.value)}
-        />
-        <button type="submit" className="ms-2">
-          Aggiungi
-        </button>
-      </form>
         </div>
-
+        {/* form per aggiungere film */}
+        <div className="col-12 mb-3">
+          <form onSubmit={addMovie}>
+            <input
+              type="text"
+              placeholder="Titolo"
+              className="form-control mb-2"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Genere"
+              className="form-control mb-2"
+              value={newGenre}
+              onChange={(e) => setNewGenre(e.target.value)}
+            />
+            <button type="submit" className="btn btn-primary">
+              Aggiungi
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
